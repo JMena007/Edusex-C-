@@ -1,146 +1,216 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections;
+using System;
 
-namespace EDUSEX
+namespace Edusex
 {
-    internal class Program
+    class Encuesta
     {
-        static void Main(string[] args)
+        public string Nombre { get; set; }
+        public int Edad { get; set; }
+        public string NecesitaCita { get; set; }
+        public string Ciudad { get; set; }
+        public string Distrito { get; set; }
+    }
+
+    class Program
+    {
+        static void Main()
         {
-            bool salir = false;
+            List<Encuesta> listaEncuestas = new List<Encuesta>();
+
+            int opcion = 0;
+            string nombre = "";
             int edad = 0;
-            string edadTexto, nombre, respuestPsico, opcion;
+            string necesitaCita = "";
+            bool edadValida;
+
+            string ciudad;
+            string Distrito = "";
 
 
-            Console.WriteLine("======================================");
-            Console.WriteLine("      BIENVENIDO A EDUSEX APP");
-            Console.WriteLine("   Educación Sexual para Jóvenes");
-            Console.WriteLine("======================================");
+            Console.WriteLine("==========================");
+            Console.WriteLine("Hola, Bienvenido a EDUSEX");
+            Console.WriteLine("==========================");
+            Console.WriteLine("Create by Josue Mena");
+            Console.WriteLine("Presione enter para continuar");
+            Console.ReadKey();
 
-            Console.Write("Por favor, ingrese su nombre: ");
-            nombre = Console.ReadLine();
-
-            Console.Write("Ingrese su edad: ");
-            edadTexto = Console.ReadLine();
-            edad = int.Parse(edadTexto);
-
-            if (edad < 10)
+            Console.WriteLine("Iniciando sistema...");
+            do
             {
-                Console.WriteLine("Lo sentimos, esta aplicación es para personas mayores de 10 años.");
-               // Return;
-            }
-
-
-            Console.Clear();
-            Console.WriteLine($"¡Hola, {nombre}!Bienvenido a EDUSEX.") ;
-            Console.WriteLine($"Edad registrada: { edad} años\n");
-
-            // Menú principal
-            while (!salir)
-            {
-                Console.WriteLine("\n ===============");
-                Console.WriteLine("MENÚ PRINCIPAL");
-                Console.WriteLine("===============n");
-                Console.WriteLine("1.Información sobre anticonceptivos");
-                Console.WriteLine("2.Evaluar riesgo de embarazo");
-                Console.WriteLine("3.Ver si necesita atención médica");
-                Console.WriteLine("4.Recomendación Psicologica");
-                Console.WriteLine("5. ¿Qué es la educación sexual ?");
-                Console.WriteLine("6.Salir");
-                Console.Write("Opción: ");
-                opcion = Console.ReadLine();
                 Console.Clear();
+                Console.WriteLine("=== Sistema EDUSEX ===");
+                Console.WriteLine();
+                Console.WriteLine("1. Realizar registro");
+                Console.WriteLine("2. Ver registros");
+                Console.WriteLine("3. Salir de la App");
+                Console.WriteLine("4. Ver conceptos Educativos");
+                Console.Write("Seleccione una opción: ");
+
+                bool opcOk = int.TryParse(Console.ReadLine(), out opcion);
+
+                if (!opcOk)
+                {
+                    Console.WriteLine("Por favor ingrese un número válido.");
+                    Console.ReadKey();
+                    continue;
+                }
+
                 switch (opcion)
                 {
-                    case "1":
-                        Console.WriteLine("\nMétodos anticonceptivos:");
-                        Console.WriteLine("-Preservativo(masculino / femenino): evita embarazos y enfermedades.");
-                        Console.WriteLine("-Pastillas anticonceptivas: deben tomarse diariamente.");
-                        Console.WriteLine("-DIU: colocado por un médico, dura años.");
-                        Console.WriteLine("-Inyecciones: mensuales o trimestrales.");
-                        Console.WriteLine("-Implante subdérmico: debajo de la piel, dura años.");
-                        Console.WriteLine("-Métodos naturales: menos seguros.");
-                        break;
+                    case 1:
+                        Console.Write("\nIngrese su nombre: ");
+                        nombre = Console.ReadLine();
 
-                    case "2":
-                        Console.Write("\n¿Tuviste relaciones sexuales sin protección ? (s / n) : ");
-                        string respuesta = Console.ReadLine().ToLower();
-                        if (respuesta == "s")
+                        Console.WriteLine("Ingrese la ciudad donde se encuentra: ");
+                        ciudad = Console.ReadLine();
+                        //ingrsar condicional en caso de que la cuidad sea managua
+                        // ingresar Distrito ...
+                        if (ciudad.ToLower() == "managua")
                         {
-                            if (edad > 0 && edad < 18)
+                            Console.WriteLine("Digite numero del Distrito de su localidad");
+                            Distrito = Console.ReadLine();
+
+                        }
+
+
+
+                        Console.Write("Ingrese su edad: ");
+                        edadValida = int.TryParse(Console.ReadLine(), out edad);
+                        if (!edadValida)
+                        {
+                            Console.WriteLine("Edad inválida. Intente de nuevo.");
+                            Console.ReadKey();
+                            break;
+                        }
+
+                        if (edad >= 12)
+                        {
+                            Console.Write("¿Requiere cita médica? (si/no): ");
+                            necesitaCita = Console.ReadLine().ToLower();
+
+                            if (necesitaCita == "si")
                             {
-                                Console.WriteLine("Hay riesgo de embarazo y sos menor de edad.Es importante buscar orientación médica.");
+                                Console.WriteLine();
+                                Console.WriteLine("Se le asignará una cita médica, en el Puesto Medico u hospital más cercano.");
+
                             }
                             else
                             {
-                                Console.WriteLine("Hay riesgo de embarazo.Se recomienda hacer una prueba.");
+                                Console.WriteLine("No se agendó ninguna cita.");
                             }
+
+                            listaEncuestas.Add(new Encuesta
+                            {
+                                Nombre = nombre,
+                                Edad = edad,
+                                NecesitaCita = necesitaCita,
+                                Ciudad = ciudad,
+                                Distrito = Distrito
+
+                            });
                         }
                         else
                         {
-                            Console.WriteLine("El riesgo es bajo si usaste protección correctamente.");
+                            Console.WriteLine("No se permite el Registro a menores de 12 años.");
                         }
+
+                        Console.WriteLine("\nPresione una tecla para continuar...");
+                        Console.ReadKey();
                         break;
 
-                    case "3":
-                        Console.Write("\n¿Tenés dolor fuerte, sangrado, dolor o síntomas extraños en tu zona vaginal ? (s / n) : ");
-    
-                        string respuestaMedica = Console.ReadLine().ToLower();
-                        if (respuestaMedica == "s")
+                    case 2:
+                        Console.Clear();
+                        Console.WriteLine("\n=== Registros guardados ===");
+
+                        if (listaEncuestas.Count == 0)
                         {
-                            Console.WriteLine("Es recomendable ir a un centro de salud.");
+                            Console.WriteLine("No hay encuestas registradas aún.");
                         }
                         else
                         {
-                            Console.WriteLine("Parece que no es urgente.Igualmente, los chequeos son importantes.");
+                            foreach (Encuesta encuesta in listaEncuestas)
+                            {
+
+                                Console.WriteLine($"Nombre: {encuesta.Nombre} | Edad: {encuesta.Edad} | Cita médica: {encuesta.NecesitaCita} | Ciudad: {encuesta.Ciudad} | Distrito: {encuesta.Distrito}");
+                                Console.WriteLine();
+                            }
+
                         }
+
+                        Console.WriteLine("\nPresione una tecla para continuar...");
+                        Console.ReadKey();
                         break;
 
-                    case "4":
-                        Console.Write("\n¿Has hablado con tu familiar, pareja sobre los síntomas que sientes ? (s / n) : ");
-                        respuestPsico = Console.ReadLine().ToLower();
-                        if (respuestPsico == "s")
+                    case 3:
+                        Console.WriteLine("Gracias por usar EDUSEX. ¡Hasta pronto!");
+                        break;
+
+                    case 4:
+                        bool volverMenu = false;
+                        while (!volverMenu)
                         {
-                            Console.WriteLine("Si por ahora no tienes problemas con tus seres queridos.Recomendamos que sigas obtenieneo conocimientos acerca de como llevar estas etapas de la mejor manera");
-                            Console.WriteLine("una vida sexual responsable y segura");
+                            Console.Clear();
+                            Console.WriteLine("=== Información educativa ===");
+                            Console.WriteLine("1. Enfermedades de transmisión sexual");
+                            Console.WriteLine("2. Métodos anticonceptivos");
+                            Console.WriteLine("3. Cambios en la adolescencia");
+                            Console.WriteLine("4. Volver al menú principal");
+                            Console.Write("Seleccione una opción: ");
+
+                            string opcionInfo = Console.ReadLine();
+
+                            Console.Clear();
+                            switch (opcionInfo)
+                            {
+                                case "1":
+                                    Console.WriteLine("=== Enfermedades de Transmisión Sexual (ETS) ===");
+                                    Console.WriteLine("- Son infecciones que se transmiten por contacto sexual sin protección.");
+                                    Console.WriteLine("- Ejemplos: VIH/SIDA, clamidia, gonorrea, sífilis.");
+                                    Console.WriteLine("- Usar preservativos ayuda a prevenirlas.");
+                                    break;
+
+                                case "2":
+                                    Console.WriteLine("=== Métodos Anticonceptivos ===");
+                                    Console.WriteLine("- Condón (masculino y femenino)");
+                                    Console.WriteLine("- Pastillas anticonceptivas");
+                                    Console.WriteLine("- Inyecciones y parches");
+                                    Console.WriteLine("- Implantes subdérmicos");
+                                    Console.WriteLine("- DIU (Dispositivo Intrauterino)");
+                                    Console.WriteLine("- Siempre consultar con un profesional médico para elegir el mejor método.");
+                                    break;
+
+                                case "3":
+                                    Console.WriteLine("=== Cambios en la Adolescencia ===");
+                                    Console.WriteLine("- Cambios físicos: crecimiento, vello corporal, cambios en la voz.");
+                                    Console.WriteLine("- Cambios emocionales: atracción, dudas, autoestima.");
+                                    Console.WriteLine("- Es importante hablar con adultos de confianza y buscar información segura.");
+                                    break;
+
+                                case "4":
+                                    volverMenu = true;
+                                    continue;
+
+                                default:
+                                    Console.WriteLine("Opción no válida. Intente nuevamente.");
+                                    break;
+                            }
+
+                            Console.WriteLine("\nPresione una tecla para continuar...");
+                            Console.ReadKey();
                         }
-                        else
-                        {
-                            Console.WriteLine("Te recomendamos acudir a una cita médica con un profesional.Tu vida y salud es algo primordial.");
-
-                        }
-                        break;
-
-                    case "5":
-                        Console.WriteLine("\nEducación sexual:");
-                        Console.WriteLine("Es el proceso de aprender sobre el cuerpo, partes íntimas, emociones, respeto, relaciones y prevención.");
-                        Console.WriteLine("Ayuda a tomar decisiones informadas, evitar embarazos no deseados y proteger la salud sexual.");
-                        break;
-
-                    case "6":
-                        Console.WriteLine($"Gracias por usar la aplicación EDUSEX, {nombre}. ¡Hasta pronto!");
-                        salir = true;
                         break;
 
                     default:
-                        Console.WriteLine("Opción no válida.Intente otra vez.");
-                    break;
+                        Console.WriteLine("Opción no Invalida.");
+                        Console.ReadKey();
+                        break;
                 }
 
-                if (!salir)
-                {
-                    Console.WriteLine("\nPresione Enter para continuar…");
-                    Console.ReadLine();
-                    Console.Clear();
-                }
-
-            }
-                    
-        }//Fin del main
-    }
-}
+            } while (opcion != 3);
+            //fin y uso del do-while
+        }//fin del main
+    }//Fin del programa
+}// fin del namespace Edusex
