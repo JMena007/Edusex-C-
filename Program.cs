@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Collections;
 using System;
-
+//Nombre del proyecto...
 namespace Edusex
 {
+    // clase antew del Void Main
     class Encuesta
     {
         public string Nombre { get; set; }
@@ -13,7 +14,7 @@ namespace Edusex
         public string Ciudad { get; set; }
         public string Distrito { get; set; }
     }
-
+// Aca inicia la clase program y el Main...
     class Program
     {
         static void Main()
@@ -66,7 +67,7 @@ namespace Edusex
 
                         Console.WriteLine("Ingrese la ciudad donde se encuentra: ");
                         ciudad = Console.ReadLine();
-                        //ingrsar condicional en caso de que la cuidad sea managua
+                        //ingresar condicional en caso de que la cuidad sea managua
                         // ingresar Distrito ...
                         if (ciudad.ToLower() == "managua")
                         {
