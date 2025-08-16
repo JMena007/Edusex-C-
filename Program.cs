@@ -5,7 +5,7 @@ using System;
 //Nombre del proyecto...
 namespace Edusex
 {
-    // clase antew del Void Main
+    // clase antes del Void Main
     class Encuesta
     {
         public string Nombre { get; set; }
